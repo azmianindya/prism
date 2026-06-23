@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react'
+import { createContext, useState, useEffect, useContext } from 'react'
 import type { Role, AuthUser, LoginResult } from '../features/auth/types'
 import api from '../services/api'
 
@@ -11,7 +11,7 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<AuthUser | null>(null)
     const [loading, setLoading] = useState(true)
 
@@ -26,13 +26,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const login = async (nim: string, password: string, role: Role): Promise<LoginResult> => {
         try {
-            const response = await api.post('/login', { nim, password, role })
+            const response = await api.post(`/login/${role}`, { nim, password })
             const { user, token } = response.data
-
             localStorage.setItem('token', token)
             localStorage.setItem('user', JSON.stringify(user))
             setUser(user)
-
             return { success: true, user }
         } catch (error: any) {
             return {

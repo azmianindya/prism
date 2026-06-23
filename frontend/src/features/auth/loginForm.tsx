@@ -11,8 +11,7 @@ const LoginForm = ({ onSubmit, role }: { onSubmit: (nim: string, password: strin
     const placeholder = role === 'mahasiswa' ? 'Masukkan NIM' : role === 'admin' ? 'Masukkan Username' : 'Masukkan NIP/NIM'
     const label = role === 'mahasiswa' ? 'NIM' : role === 'admin' ? 'Username' : 'NIP/NIM'
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+    const handleSubmit = async () => {
         setError('')
         setLoading(true)
         const result = await onSubmit(nim, password)
@@ -21,7 +20,7 @@ const LoginForm = ({ onSubmit, role }: { onSubmit: (nim: string, password: strin
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+        <div className="space-y-4 mt-6">
             {error && (
                 <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm">
                     ⚠️ {error}
@@ -35,7 +34,6 @@ const LoginForm = ({ onSubmit, role }: { onSubmit: (nim: string, password: strin
                     placeholder={placeholder}
                     value={nim}
                     onChange={(e) => setNim(e.target.value)}
-                    required
                     disabled={loading}
                     className="border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500 w-full"
                 />
@@ -48,7 +46,6 @@ const LoginForm = ({ onSubmit, role }: { onSubmit: (nim: string, password: strin
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                     disabled={loading}
                     className="border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-500 w-full"
                 />
@@ -66,12 +63,12 @@ const LoginForm = ({ onSubmit, role }: { onSubmit: (nim: string, password: strin
             </div>
 
             <div
-                onClick={!loading ? (e) => handleSubmit(e as any) : undefined}
+                onClick={!loading ? handleSubmit : undefined}
                 className="w-full bg-blue-600 text-white rounded-xl py-3 text-sm font-semibold text-center cursor-pointer hover:bg-blue-700 transition-colors"
             >
                 {loading ? 'Loading...' : 'Login'}
             </div>
-        </form>
+        </div>
     )
 }
 

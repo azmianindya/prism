@@ -1,5 +1,7 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom'
 
-export default function Home() {
-    return <Navigate to="/login" replace />;
+const Home = () => {
+    return <Navigate to="/login" />
 }
+
+export default Home

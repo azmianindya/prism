@@ -27,8 +27,8 @@ const LoginPage = () => {
             {/* Kiri - Form */}
             <div className="w-1/2 bg-white flex items-center justify-center p-10">
                 <div className="w-full max-w-sm">
-                    <div className="mb-2 flex justify-center">
-                        <img src={Logo} alt="PRISM Logo" className="w-30 h-30 object-contain" />
+                    <div className="mb-4 flex justify-center">
+                        <img src={Logo} alt="PRISM Logo" className="w-20 h-20 object-contain" />
                     </div>
                     <div className="mb-6 text-center">
                         <h1 className="text-2xl font-bold text-gray-800">Sistem Absensi &</h1>
