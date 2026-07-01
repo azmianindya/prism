@@ -8,16 +8,14 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    private function attemptLogin(Request $request, string $role)
+    public function login(Request $request)
     {
         $request->validate([
             'nim' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('nim', $request->nim)
-                    ->where('role', $role)
-                    ->first();
+        $user = User::where('nim', $request->nim)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
@@ -38,21 +36,6 @@ class AuthController extends Controller
                 'role' => $user->role,
             ]
         ]);
-    }
-
-    public function loginMahasiswa(Request $request)
-    {
-        return $this->attemptLogin($request, 'mahasiswa');
-    }
-
-    public function loginAdmin(Request $request)
-    {
-        return $this->attemptLogin($request, 'admin');
-    }
-
-    public function loginPic(Request $request)
-    {
-        return $this->attemptLogin($request, 'pic');
     }
 
     public function logout(Request $request)

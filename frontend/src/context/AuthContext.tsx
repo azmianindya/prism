@@ -1,11 +1,11 @@
 import { createContext, useState, useEffect, useContext } from 'react'
-import type { Role, AuthUser, LoginResult } from '../features/auth/types'
+import type { AuthUser, LoginResult } from '../features/auth/types'
 import api from '../services/api'
 
 interface AuthContextType {
     user: AuthUser | null
     loading: boolean
-    login: (nim: string, password: string, role: Role) => Promise<LoginResult>
+    login: (nim: string, password: string) => Promise<LoginResult>
     logout: () => Promise<void>
 }
 
@@ -24,9 +24,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false)
     }, [])
 
-    const login = async (nim: string, password: string, role: Role): Promise<LoginResult> => {
+    const login = async (nim: string, password: string): Promise<LoginResult> => {
         try {
-            const response = await api.post(`/login/${role}`, { nim, password })
+            const response = await api.post('/login', { nim, password })
             const { user, token } = response.data
             localStorage.setItem('token', token)
             localStorage.setItem('user', JSON.stringify(user))

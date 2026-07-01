@@ -1,22 +1,18 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import type { Role } from './types'
-import RoleSelector from './roleSelector'
 import LoginForm from './loginForm'
 import Logo from '../../assets/logo.png'
 import Kampus from '../../assets/kampus.png'
 
 const LoginPage = () => {
-    const [role, setRole] = useState<Role>('mahasiswa')
     const { login } = useAuth()
     const navigate = useNavigate()
 
     const handleLogin = async (nim: string, password: string) => {
-        const result = await login(nim, password, role)
-        if (result.success) {
-            if (role === 'admin') navigate('/admin/dashboard')
-            else if (role === 'pic') navigate('/pic/dashboard')
+        const result = await login(nim, password)
+        if (result.success && result.user) {
+            if (result.user.role === 'admin') navigate('/admin/dashboard')
+            else if (result.user.role === 'pic') navigate('/pic/dashboard')
             else navigate('/dashboard')
         }
         return result
@@ -24,7 +20,6 @@ const LoginPage = () => {
 
     return (
         <div className="h-screen flex">
-            {/* Kiri - Form */}
             <div className="w-1/2 bg-white flex items-center justify-center p-10">
                 <div className="w-full max-w-sm">
                     <div className="mb-4 flex justify-center">
@@ -35,18 +30,11 @@ const LoginPage = () => {
                         <h1 className="text-2xl font-bold text-gray-800">Monitoring Piket Mahasiswa</h1>
                         <p className="text-sm text-gray-400 mt-1">Login untuk melanjutkan</p>
                     </div>
-                    <RoleSelector role={role} setRole={setRole} />
-                    <LoginForm onSubmit={handleLogin} role={role} />
+                    <LoginForm onSubmit={handleLogin} />
                 </div>
             </div>
-
-            {/* Kanan - Foto */}
             <div className="w-1/2 relative">
-                <img
-                    src={Kampus}
-                    alt="Ilustrasi Piket"
-                    className="absolute inset-0 w-full h-full object-cover"
-                />
+                <img src={Kampus} alt="Ilustrasi Piket" className="absolute inset-0 w-full h-full object-cover" />
             </div>
         </div>
     )

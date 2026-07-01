@@ -1,15 +1,12 @@
 import { useState } from 'react'
-import type { Role, LoginResult } from './types'
+import type { LoginResult } from './types'
 
-const LoginForm = ({ onSubmit, role }: { onSubmit: (nim: string, password: string) => Promise<LoginResult>, role: Role }) => {
+const LoginForm = ({ onSubmit }: { onSubmit: (nim: string, password: string) => Promise<LoginResult> }) => {
     const [nim, setNim] = useState('')
     const [password, setPassword] = useState('')
     const [remember, setRemember] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-
-    const placeholder = role === 'mahasiswa' ? 'Masukkan NIM' : role === 'admin' ? 'Masukkan Username' : 'Masukkan NIP/NIM'
-    const label = role === 'mahasiswa' ? 'NIM' : role === 'admin' ? 'Username' : 'NIP/NIM'
 
     const handleSubmit = async () => {
         setError('')
@@ -28,10 +25,10 @@ const LoginForm = ({ onSubmit, role }: { onSubmit: (nim: string, password: strin
             )}
 
             <div className="flex flex-col gap-1">
-                <div className="text-sm text-gray-600">{label}</div>
+                <div className="text-sm text-gray-600">NIM/Username</div>
                 <input
                     type="text"
-                    placeholder={placeholder}
+                    placeholder="Masukkan NIM/Username"
                     value={nim}
                     onChange={(e) => setNim(e.target.value)}
                     disabled={loading}
